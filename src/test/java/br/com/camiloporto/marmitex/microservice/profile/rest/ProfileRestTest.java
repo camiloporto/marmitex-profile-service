@@ -1,6 +1,9 @@
 package br.com.camiloporto.marmitex.microservice.profile.rest;
 
 import br.com.camiloporto.marmitex.microservice.profile.ServiceApplication;
+import br.com.camiloporto.marmitex.microservice.profile.model.Profile;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.core.Is.is;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -37,13 +41,23 @@ public class ProfileRestTest {
     }
 
     @Test
-    public void getHello() throws Exception {
+    public void shouldCreateNewProfile() throws Exception {
+
+        Profile p = new Profile("camiloporto", "s3cr3t", "Camilo Porto", "8888-8765", "5th St.");
+        String jsonContent = toJson(p);
+
         mvc.perform(MockMvcRequestBuilders
-                .get("/")
+                .post("/")
+                .content(jsonContent)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andExpect(content().string(
-                        is("{hello : ola camilo}")));
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    private String toJson(Profile p) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(p);
     }
 
 }
