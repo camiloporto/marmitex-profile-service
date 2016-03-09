@@ -1,6 +1,7 @@
 target/
 .idea/
 .project
+service.iml
 marmitex-profile-service.iml
 pom.xml.tag
 pom.xml.releaseBackup
