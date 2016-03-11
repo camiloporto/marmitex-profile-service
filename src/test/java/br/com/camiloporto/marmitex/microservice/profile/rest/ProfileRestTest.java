@@ -1,5 +1,6 @@
 package br.com.camiloporto.marmitex.microservice.profile.rest;
 
+import br.com.camiloporto.marmitex.microservice.profile.AbstractMarmitexProfileTest;
 import br.com.camiloporto.marmitex.microservice.profile.ServiceApplication;
 import br.com.camiloporto.marmitex.microservice.profile.model.Profile;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,10 +26,8 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 /**
  * Created by ur42 on 01/03/2016.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ServiceApplication.class)
 @WebAppConfiguration
-public class ProfileRestTest {
+public class ProfileRestTest extends AbstractMarmitexProfileTest {
 
     private MockMvc mvc;
 

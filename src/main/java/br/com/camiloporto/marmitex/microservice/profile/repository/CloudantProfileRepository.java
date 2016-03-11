@@ -5,8 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,23 +21,17 @@ import java.util.UUID;
  * Created by ur42 on 09/03/2016.
  */
 
-@Service
+@Component
 public class CloudantProfileRepository implements ProfileRepository {
 
     private String key = "hengledungsheriallestopa";
     private String pass = "4771147dce8dae2abf30787367d38c4197a39af7";
     private String endpoint = "https://camiloporto.cloudant.com/marmitex-dev";
+
+    @Autowired
     private RestTemplate template;
-    private Proxy proxy;
 
     public CloudantProfileRepository() {
-        InetSocketAddress address = new InetSocketAddress(
-                "localhost",3128);
-        proxy = new Proxy(Proxy.Type.HTTP, address);
-        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-//        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-        factory.setProxy(proxy);
-        template = new RestTemplate(factory);
     }
 
     //FIXME ajustar mapeamento JSON para 'id' e 'rev' de profile.
