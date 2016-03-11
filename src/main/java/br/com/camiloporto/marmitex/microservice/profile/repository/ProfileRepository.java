@@ -1,10 +1,10 @@
-package br.com.camiloporto.marmitex.microservice.profile.service;
+package br.com.camiloporto.marmitex.microservice.profile.repository;
 
 import br.com.camiloporto.marmitex.microservice.profile.model.Profile;
 
 /**
  * Created by ur42 on 09/03/2016.
  */
-public interface ProfileService {
+public interface ProfileRepository {
     Profile save(Profile p);
 }

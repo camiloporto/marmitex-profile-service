@@ -1,8 +1,7 @@
-package br.com.camiloporto.marmitex.microservice.profile.service;
+package br.com.camiloporto.marmitex.microservice.profile.repository;
 
 import br.com.camiloporto.marmitex.microservice.profile.ServiceApplication;
 import br.com.camiloporto.marmitex.microservice.profile.model.Profile;
-import lombok.Setter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,10 +14,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ServiceApplication.class)
-public class ProfileServiceTest {
+public class ProfileRepositoryTest {
 
     @Autowired
-    private ProfileService profileService;
+    private ProfileRepository profileService;
 
     @Test
     public void shouldCreateNewProfile() {

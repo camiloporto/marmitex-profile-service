@@ -1,4 +1,4 @@
-package br.com.camiloporto.marmitex.microservice.profile.service;
+package br.com.camiloporto.marmitex.microservice.profile.repository;
 
 import br.com.camiloporto.marmitex.microservice.profile.model.Profile;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,15 +6,12 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.http.*;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
 import java.net.Proxy;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -23,7 +20,7 @@ import java.util.UUID;
  */
 
 @Service
-public class ProfileServiceImpl implements ProfileService {
+public class CloudantProfileRepository implements ProfileRepository {
 
     private String key = "hengledungsheriallestopa";
     private String pass = "4771147dce8dae2abf30787367d38c4197a39af7";
@@ -31,7 +28,7 @@ public class ProfileServiceImpl implements ProfileService {
     private RestTemplate template;
     private Proxy proxy;
 
-    public ProfileServiceImpl() {
+    public CloudantProfileRepository() {
         InetSocketAddress address = new InetSocketAddress(
                 "localhost",3128);
         proxy = new Proxy(Proxy.Type.HTTP, address);
