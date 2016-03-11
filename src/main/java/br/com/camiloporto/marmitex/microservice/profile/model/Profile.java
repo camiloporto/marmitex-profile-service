@@ -1,5 +1,8 @@
 package br.com.camiloporto.marmitex.microservice.profile.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +12,12 @@ import lombok.Setter;
 
 @Getter @Setter
 public class Profile {
+
+    @SerializedName("_id")
+    private String id;
+
+    @SerializedName("_rev")
+    private String revision;
 
     private String login;
     private String pass;
