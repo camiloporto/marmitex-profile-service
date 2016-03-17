@@ -9,8 +9,6 @@
         </layout>
     </appender>
 
-    <logger name="httpclient.wire" level="severe"/>
-
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
