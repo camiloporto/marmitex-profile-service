@@ -7,4 +7,6 @@ import br.com.camiloporto.marmitex.microservice.profile.model.Profile;
  */
 public interface ProfileRepository {
     Profile save(Profile p);
+
+    Profile findByLoginPass(String login, String pass);
 }

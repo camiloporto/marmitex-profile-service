@@ -1,15 +1,10 @@
 package br.com.camiloporto.marmitex.microservice.profile.repository;
 
 import br.com.camiloporto.marmitex.microservice.profile.AbstractMarmitexProfileTest;
-import br.com.camiloporto.marmitex.microservice.profile.ServiceApplication;
 import br.com.camiloporto.marmitex.microservice.profile.model.Profile;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Created by ur42 on 09/03/2016.
@@ -26,5 +21,16 @@ public class ProfileRepositoryTest extends AbstractMarmitexProfileTest {
         Profile saved = profileRepository.save(p);
         Assert.assertNotNull(saved.getId());
         Assert.assertNotNull(saved.getRevision());
+    }
+
+    @Test
+    public void shouldFindByLoginPass() {
+
+        Profile p = new Profile("shouldFindByLoginPass_login", "s3cr3t", "Camilo Porto", "8888-8765", "5th St.");
+        Profile saved = profileRepository.save(p);
+        String savedId = saved.getId();
+
+        Profile found = profileRepository.findByLoginPass("shouldFindByLoginPass_login", "s3cr3t");
+        Assert.assertEquals(savedId, found.getId());
     }
 }

@@ -20,8 +20,9 @@ public class RestTemplateBehindProxyConfig implements RestTemplateConfiguration 
     public RestTemplate createRestTemplate() {
         InetSocketAddress address = new InetSocketAddress(
                 "localhost",3128);
-        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setProxy(new Proxy(Proxy.Type.HTTP, address));
-        return new RestTemplate(factory);
+        SimpleClientHttpRequestFactory clientHttpRequestFactory = new SimpleClientHttpRequestFactory();
+        clientHttpRequestFactory.setProxy(new Proxy(Proxy.Type.HTTP, address));
+        RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
+        return restTemplate;
     }
 }
