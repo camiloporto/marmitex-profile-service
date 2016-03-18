@@ -2,7 +2,9 @@ package br.com.camiloporto.marmitex.microservice.profile.repository;
 
 import br.com.camiloporto.marmitex.microservice.profile.AbstractMarmitexProfileTest;
 import br.com.camiloporto.marmitex.microservice.profile.model.Profile;
+import br.com.camiloporto.marmitex.microservice.profile.util.DatabaseCleaner;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,6 +17,14 @@ public class ProfileRepositoryTest extends AbstractMarmitexProfileTest {
     @Autowired
     private ProfileRepository profileRepository;
 
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
+
+    @Before
+    public void cleanProfileDatabase() {
+        databaseCleaner.deleteAllProfileDocs();
+    }
+
     @Test
     public void shouldCreateNewProfile() {
         Profile p = new Profile("camiloporto", "s3cr3t", "Camilo Porto", "8888-8765", "5th St.");
@@ -22,6 +32,8 @@ public class ProfileRepositoryTest extends AbstractMarmitexProfileTest {
         Assert.assertNotNull(saved.getId());
         Assert.assertNotNull(saved.getRevision());
     }
+
+    //FIXME tornar testes repetiveis. Criar funcao para limpar docs criados no teste
 
     @Test
     public void shouldFindByLoginPass() {

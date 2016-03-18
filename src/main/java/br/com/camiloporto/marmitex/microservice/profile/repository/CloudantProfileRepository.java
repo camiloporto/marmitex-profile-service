@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -80,6 +79,7 @@ public class CloudantProfileRepository implements ProfileRepository {
         CloudantQuery cloudantQuery = new CloudantQuery()
                 .addSelector("login", login)
                 .addSelector("pass", pass)
+                .addFields("_id", "_rev", "type")
                 .limit(1);
 
         return cloudantQuery;
@@ -109,10 +109,4 @@ public class CloudantProfileRepository implements ProfileRepository {
         private String id;
     }
 
-    @Getter @Setter
-    static class CloudantQueryResponse<T> {
-
-        @JsonProperty("docs")
-        private List<T> documents;
-    }
 }
