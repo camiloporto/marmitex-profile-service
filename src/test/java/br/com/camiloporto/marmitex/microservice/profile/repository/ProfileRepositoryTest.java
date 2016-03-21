@@ -33,8 +33,6 @@ public class ProfileRepositoryTest extends AbstractMarmitexProfileTest {
         Assert.assertNotNull(saved.getRevision());
     }
 
-    //FIXME tornar testes repetiveis. Criar funcao para limpar docs criados no teste
-
     @Test
     public void shouldFindByLoginPass() {
 
