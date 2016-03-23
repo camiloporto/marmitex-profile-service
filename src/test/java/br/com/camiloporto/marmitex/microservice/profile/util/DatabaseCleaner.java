@@ -1,6 +1,7 @@
 package br.com.camiloporto.marmitex.microservice.profile.util;
 
 import br.com.camiloporto.marmitex.microservice.profile.model.Profile;
+import br.com.camiloporto.marmitex.microservice.profile.repository.CloudantEnvironment;
 import br.com.camiloporto.marmitex.microservice.profile.repository.CloudantQueryResponse;
 import br.com.camiloporto.marmitex.microservice.profile.repository.cloudant.CloudantQuery;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -19,11 +20,8 @@ import java.util.List;
 @Component
 public class DatabaseCleaner {
 
-    //FIXME refatorar esse codigo. Parametrizar valores e delegar para o spring construir e injetar dependencias
-    private String key = "hengledungsheriallestopa";
-
-    private String pass = "4771147dce8dae2abf30787367d38c4197a39af7";
-    private String endpoint = "https://camiloporto.cloudant.com/marmitex-dev";
+    @Autowired
+    private CloudantEnvironment cloudantEnvironment;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -37,7 +35,7 @@ public class DatabaseCleaner {
     private List<Profile> sendBulkDeleteRequest(BulkDeleteRequest bdr) {
         HttpHeaders httpHeaders = prepareCloudantHttpRequestHeaders();
 
-        String queryUrl = endpoint + "/_bulk_docs";
+        String queryUrl = cloudantEnvironment.getEndpoint() + "/_bulk_docs";
 
         HttpEntity<BulkDeleteRequest> entity = new HttpEntity<BulkDeleteRequest>(bdr, httpHeaders);
         ResponseEntity<List<Profile>> responseEntity = restTemplate.exchange(
@@ -52,7 +50,7 @@ public class DatabaseCleaner {
     private List<Profile> queryAllProfileDocsForDelete() {
         HttpHeaders httpHeaders = prepareCloudantHttpRequestHeaders();
 
-        String queryUrl = endpoint + "/_find";
+        String queryUrl = cloudantEnvironment.getEndpoint() + "/_find";
         CloudantQuery cloudantQuery = new CloudantQuery()
                 .addSelector("type", Profile.class.getName())
                 .addFields("_id", "_rev", "type")
@@ -72,7 +70,7 @@ public class DatabaseCleaner {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        String plainCreds = key + ":" + pass;
+        String plainCreds = cloudantEnvironment.getKey() + ":" + cloudantEnvironment.getPass();
         byte[] plainCredsBytes = plainCreds.getBytes();
         byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
         String base64Creds = new String(base64CredsBytes);
