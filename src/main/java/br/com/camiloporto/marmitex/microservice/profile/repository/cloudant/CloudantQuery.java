@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,10 +40,46 @@ public class CloudantQuery {
         return this;
     }
 
+    public CloudantQuery addAll(Class<?> t) {
+        if(fields == null) fields = new ArrayList();
+        Field[] classFields = t.getDeclaredFields();
+        for (Field f : classFields) {
+            boolean hasJsonAnnotation = false;
+            Annotation[] fieldAnnotations = f.getDeclaredAnnotations();
+            for (Annotation a :fieldAnnotations) {
+                Class<? extends Annotation> annotationType = a.annotationType();
+                String name = annotationType.getCanonicalName();
+                String canonicalName = JsonProperty.class.getCanonicalName();
+                if(canonicalName.equals(name)) {
+                    try {
+                        Method[] methods = annotationType.getMethods();
+                        Method valueMethod = annotationType.getMethod("value", null);
+                        Object result = valueMethod.invoke(a);
+                        fields.add((String) result);
+                        hasJsonAnnotation = true;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            if(!hasJsonAnnotation) {
+                fields.add(f.getName());
+            }
+        }
+        return this;
+    }
+
     public CloudantQuery addFields(String... fieldsToAdd) {
         if(fields == null) fields = new ArrayList();
         for (String field: fieldsToAdd) {
             fields.add(field);
+        }
+        return this;
+    }
+
+    public CloudantQuery excludeFields(String... fieldsToRemove) {
+        for (String field: fieldsToRemove) {
+            fields.remove(field);
         }
         return this;
     }

@@ -9,4 +9,6 @@ public interface ProfileRepository {
     Profile save(Profile p);
 
     Profile findByLoginPass(String login, String pass);
+
+    Profile findById(String id);
 }

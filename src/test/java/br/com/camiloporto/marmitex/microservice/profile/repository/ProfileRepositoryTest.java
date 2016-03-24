@@ -33,6 +33,37 @@ public class ProfileRepositoryTest extends AbstractMarmitexProfileTest {
         Assert.assertNotNull(saved.getRevision());
     }
 
+//    @Test
+//    public void shouldUpdateExistentProfile() {
+//        Profile p = new Profile("shouldUpdateExistentProfile_camiloporto", "s3cr3t", "Camilo Porto", "8888-8765", "5th St.");
+//        Profile saved = profileRepository.save(p);
+//
+//        saved.setName("Camilo Porto Nunes");
+//        profileRepository.save(saved);
+//
+//        Profile updated = profileRepository.findByLogin("shouldUpdateExistentProfile_camiloporto", "s3cr3t");
+//
+//        Assert.assertEquals(updated.getId(), saved.getId());
+//        Assert.assertTrue(updated.getRevision().startsWith("2"));
+//        Assert.assertEquals("Camilo Porto Nunes", updated.getName());
+//    }
+
+    @Test
+    public void shouldFindByLogin() {
+
+        Profile p = new Profile("shouldFindByLoginPass_login", "s3cr3t", "Camilo Porto", "8888-8765", "5th St.");
+        Profile saved = profileRepository.save(p);
+        String savedId = saved.getId();
+
+        Profile found = profileRepository.findById(savedId);
+        Assert.assertEquals(savedId, found.getId());
+        Assert.assertNotNull(found.getName());
+        Assert.assertNotNull(found.getRevision());
+        Assert.assertNotNull(found.getAddress());
+        Assert.assertNotNull(found.getLogin());
+        Assert.assertNull(found.getPass());
+    }
+
     @Test
     public void shouldFindByLoginPass() {
 

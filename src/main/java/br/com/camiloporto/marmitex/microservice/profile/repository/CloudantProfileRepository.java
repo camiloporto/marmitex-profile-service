@@ -36,8 +36,11 @@ public class CloudantProfileRepository implements ProfileRepository {
     @Override
     public Profile save(Profile p) {
         String uuid = UUID.randomUUID().toString();
-        HttpHeaders httpHeaders = prepareCloudantHttpRequestHeaders();
+        if(p.getId() != null) {//already persisted
+            uuid = p.getId();
+        }
 
+        HttpHeaders httpHeaders = prepareCloudantHttpRequestHeaders();
         HttpEntity<Profile> entity = new HttpEntity<Profile>(p, httpHeaders);
 
         ResponseEntity<CloudantCreateDocumentResponse> responseEntity = template.exchange(
@@ -62,6 +65,28 @@ public class CloudantProfileRepository implements ProfileRepository {
         HttpHeaders httpHeaders = prepareCloudantHttpRequestHeaders();
 
         CloudantQuery jsonQuery = createJsonQueryLoginPass(login, pass);
+        String queryUrl = endpoint + "/_find";
+
+        HttpEntity<CloudantQuery> entity = new HttpEntity<CloudantQuery>(jsonQuery, httpHeaders);
+        ResponseEntity<CloudantQueryResponse<Profile>> responseEntity = template.exchange(
+                queryUrl,
+                HttpMethod.POST,
+                entity,
+                new ParameterizedTypeReference<CloudantQueryResponse<Profile>>() {});
+
+        return responseEntity.getBody().getDocuments().get(0);
+    }
+
+    @Override
+    public Profile findById(String id) {
+        HttpHeaders httpHeaders = prepareCloudantHttpRequestHeaders();
+
+        CloudantQuery jsonQuery = new CloudantQuery()
+                .addSelector("_id", id)
+                .addAll(Profile.class)
+                .excludeFields("pass");
+
+
         String queryUrl = endpoint + "/_find";
 
         HttpEntity<CloudantQuery> entity = new HttpEntity<CloudantQuery>(jsonQuery, httpHeaders);
