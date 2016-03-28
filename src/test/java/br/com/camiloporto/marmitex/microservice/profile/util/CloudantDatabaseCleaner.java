@@ -18,7 +18,7 @@ import java.util.List;
  * Created by ur42 on 17/03/2016.
  */
 @Component
-public class DatabaseCleaner {
+public class CloudantDatabaseCleaner {
 
     @Autowired
     private CloudantEnvironment cloudantEnvironment;
