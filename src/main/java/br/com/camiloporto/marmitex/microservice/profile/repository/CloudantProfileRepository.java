@@ -20,7 +20,7 @@ import java.util.UUID;
  */
 
 @Component
-public class CloudantProfileRepository implements ProfileRepository {
+public class CloudantProfileRepository /*implements ProfileRepository */{
 
     //FIXME refatorar esse codigo. Parametrizar valores e delegar para o spring construir e injetar dependencias
     private String key = "hengledungsheriallestopa";
@@ -33,7 +33,6 @@ public class CloudantProfileRepository implements ProfileRepository {
     public CloudantProfileRepository() {}
 
 
-    @Override
     public Profile save(Profile p) {
         String uuid = UUID.randomUUID().toString();
         if(p.getId() != null) {//already persisted
@@ -60,7 +59,6 @@ public class CloudantProfileRepository implements ProfileRepository {
         return p;
     }
 
-    @Override
     public Profile findByLoginPass(String login, String pass) {
         HttpHeaders httpHeaders = prepareCloudantHttpRequestHeaders();
 
@@ -77,7 +75,6 @@ public class CloudantProfileRepository implements ProfileRepository {
         return responseEntity.getBody().getDocuments().get(0);
     }
 
-    @Override
     public Profile findById(String id) {
         HttpHeaders httpHeaders = prepareCloudantHttpRequestHeaders();
 

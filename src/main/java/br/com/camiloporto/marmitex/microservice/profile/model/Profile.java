@@ -25,7 +25,7 @@ public class Profile {
     private String revision;
 
     @Transient
-    @JsonProperty("_id")
+//    @JsonProperty("_id")
     private String id;
 
     @Id

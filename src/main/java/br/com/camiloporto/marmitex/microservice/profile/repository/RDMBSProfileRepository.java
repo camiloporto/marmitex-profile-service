@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface RDMBSProfileRepository extends JpaRepository<Profile, Long> {
 
     Profile findByLoginAndPass(String login, String pass);
+
+    Profile findByLogin(String login);
 }
