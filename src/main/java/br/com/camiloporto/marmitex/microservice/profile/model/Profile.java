@@ -1,9 +1,12 @@
 package br.com.camiloporto.marmitex.microservice.profile.model;
 
+import br.com.camiloporto.marmitex.microservice.profile.service.ProfileValidationChecklist;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 
@@ -35,9 +38,15 @@ public class Profile {
     private Long profileId;
 
     @Column(name = "login")
+    @Email(message = "{br.com.camiloporto.marmitex.microservice.profile.INVALID_LOGIN}",
+        groups = ProfileValidationChecklist.NewProfileRuleGroups.class)
+    @NotEmpty(message= "{br.com.camiloporto.marmitex.microservice.profile.LOGIN_REQUIRED}",
+         groups= ProfileValidationChecklist.NewProfileRuleGroups.class)
     private String login;
 
     @Column(name = "pass")
+    @NotEmpty(message= "{br.com.camiloporto.marmitex.microservice.profile.PASSWORD_REQUIRED}",
+            groups= ProfileValidationChecklist.NewProfileRuleGroups.class)
     private String pass;
 
     @Transient

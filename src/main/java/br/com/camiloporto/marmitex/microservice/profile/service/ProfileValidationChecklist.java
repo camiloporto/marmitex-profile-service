@@ -4,6 +4,7 @@ import br.com.camiloporto.marmitex.microservice.profile.model.Profile;
 import br.com.camiloporto.marmitex.microservice.profile.repository.RDMBSProfileRepository;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 
 /**
@@ -16,6 +17,7 @@ public class ProfileValidationChecklist {
     private RDMBSProfileRepository profileRepository;
 
     @Setter
+    @Valid
     private Profile profile;
 
     public ProfileValidationChecklist(RDMBSProfileRepository profileRepository) {

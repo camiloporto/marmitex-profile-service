@@ -35,7 +35,7 @@ public class ProfileRestTest extends AbstractMarmitexProfileTest {
 
     @Test
     public void shouldCreateNewProfile() throws Exception {
-        Profile p = new Profile("camiloporto", "s3cr3t", "Camilo Porto", "8888-8765", "5th St.");
+        Profile p = new Profile("camiloporto@email", "s3cr3t", "Camilo Porto", "8888-8765", "5th St.");
         String jsonContent = toJson(p);
 
         mvc.perform(MockMvcRequestBuilders
