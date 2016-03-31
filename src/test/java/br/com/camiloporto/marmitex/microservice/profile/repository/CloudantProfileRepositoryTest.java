@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Created by ur42 on 09/03/2016.
  */
-
+@Deprecated
 public class CloudantProfileRepositoryTest/* extends AbstractTransactionalMarmitexProfileTest */{
 
     @Autowired

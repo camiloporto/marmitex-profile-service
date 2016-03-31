@@ -24,19 +24,6 @@ public class RDBMSProfileRepositoryTest extends AbstractTransactionalMarmitexPro
     }
 
     //FIXME criar camada de negocio com regras de validacao para:
-    // - criacao de novo perfil
     // - alteração de senha
-    // - inclusao de camada de segurança (Spring Security)
-
-    @Test
-    public void shouldFindByLoginPass() {
-
-        Profile p = new Profile("shouldFindByLoginPass_login", "s3cr3t", "Camilo Porto", "8888-8765", "5th St.");
-        Profile saved = profileRepository.save(p);
-        String savedId = saved.getId();
-
-        Profile found = profileRepository.findByLoginAndPass("shouldFindByLoginPass_login", "s3cr3t");
-        Assert.assertEquals(found.getId(), savedId);
-    }
 
 }

@@ -2,12 +2,10 @@ package br.com.camiloporto.marmitex.microservice.profile.service;
 
 import br.com.camiloporto.marmitex.microservice.profile.AbstractMarmitexProfileTest;
 import br.com.camiloporto.marmitex.microservice.profile.model.Profile;
-import br.com.camiloporto.marmitex.microservice.profile.repository.RDMBSProfileRepository;
 import br.com.camiloporto.marmitex.microservice.profile.util.ExceptionChecker;
 import lombok.Setter;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.validation.ConstraintViolationException;
@@ -18,16 +16,9 @@ import javax.validation.ConstraintViolationException;
 public class ProfileServiceTest extends AbstractMarmitexProfileTest {
 
     public static final String VALID_LOGIN = "camiloporto@email.com";
+
     @Autowired @Setter
     private ProfileService profileService;
-
-    @Autowired
-    private RDMBSProfileRepository profileRepository;
-
-    @BeforeMethod
-    public void deleteData() {
-        profileRepository.deleteAll();
-    }
 
     @Test
     public void shouldCreateNewProfile() {

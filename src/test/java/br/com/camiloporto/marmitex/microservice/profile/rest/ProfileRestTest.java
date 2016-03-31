@@ -10,6 +10,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -28,9 +29,11 @@ public class ProfileRestTest extends AbstractMarmitexProfileTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
+
     @BeforeClass
     public void setUp() throws Exception {
-        mvc =  webAppContextSetup(webApplicationContext).build();
+        mvc =  webAppContextSetup(webApplicationContext)
+                .build();
     }
 
     @Test
@@ -39,12 +42,16 @@ public class ProfileRestTest extends AbstractMarmitexProfileTest {
         String jsonContent = toJson(p);
 
         mvc.perform(MockMvcRequestBuilders
-                .post("/")
+                .post("/create")
                 .content(jsonContent)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8))
                 .andDo(print())
                 .andExpect(status().isOk());
+
+        Profile saved = profileRepository.findByLogin("camiloporto@email");
+        Assert.assertNotNull(saved);
+
     }
 
     private String toJson(Profile p) throws JsonProcessingException {
