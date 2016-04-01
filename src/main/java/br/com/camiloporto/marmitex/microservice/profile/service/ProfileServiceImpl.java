@@ -39,13 +39,12 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public Profile save(Profile p) {
         BusinessValidator<ProfileValidationChecklist> businessValidator =
-                new BusinessValidator<ProfileValidationChecklist>(validator);
+                new BusinessValidator<>(validator);
         ProfileValidationChecklist checklist = checklistValidationFactory.createProfileValidationChecklist();
         checklist.setProfile(p);
         businessValidator.validate(checklist, ProfileValidationChecklist.NewProfileRuleGroups.class);
         encryptPassword(p);
-        Profile saved = profileRepository.save(p);
-        return saved;
+        return profileRepository.save(p);
     }
 
     private void encryptPassword(Profile p) {
@@ -55,8 +54,8 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String login = (String) authentication.getName();
-        String plainPass = (String) authentication.getCredentials().toString();
+        String login = authentication.getName();
+        String plainPass = authentication.getCredentials().toString();
         Profile profile = profileRepository.findByLogin(login);
         if(profile != null && passwordEncoder.matches(plainPass, profile.getPass())) {
             List<GrantedAuthority> authorities = loadAuthorities(profile);

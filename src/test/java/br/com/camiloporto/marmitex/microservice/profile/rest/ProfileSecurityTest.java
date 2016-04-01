@@ -18,6 +18,7 @@ import static org.springframework.security.test.web.servlet.response.SecurityMoc
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
@@ -52,6 +53,7 @@ public class ProfileSecurityTest extends AbstractMarmitexProfileTest {
         mvc.perform(
                 formLogin("/login").user(login).password(pass))
                 .andDo(print())
+                .andExpect(status().isOk())
                 .andExpect(authenticated());
     }
 
@@ -71,6 +73,7 @@ public class ProfileSecurityTest extends AbstractMarmitexProfileTest {
         mvc.perform(
                 formLogin("/login").user("user").password("wrongpass"))
                 .andDo(print())
+                .andExpect(status().isUnauthorized())
                 .andExpect(unauthenticated());
     }
 }

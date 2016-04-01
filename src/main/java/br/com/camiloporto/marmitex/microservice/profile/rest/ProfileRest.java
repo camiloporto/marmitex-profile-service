@@ -24,12 +24,4 @@ public class ProfileRest {
     public @ResponseBody void createProfile(@RequestBody Profile profile) {
         profileService.save(profile);
     }
-
-    @RequestMapping(
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
-        )
-    public @ResponseBody String hello() {
-        return "{hello : profile service}";
-    }
 }
