@@ -143,10 +143,69 @@ public class ProfileServiceTest extends AbstractMarmitexProfileTest {
         Profile p = new Profile(VALID_LOGIN, "s3cr3t", "Camilo Porto", "8888-8765", "5th St.");
         profileService.save(p);
 
-        profileService.changePassword(VALID_LOGIN, "s3cr3t", "newPassword");
+        profileService.changePassword(VALID_LOGIN, "s3cr3t", "newPassword", "newPassword");
 
         Profile queried = profileRepository.findByLogin(VALID_LOGIN);
         Assert.assertEquals(queried.getPass(), "newPassword", "password not updated as expected");
+    }
+
+    @Test
+    public void passwordMustBeConfirmedOnChange() {
+        Profile p = new Profile(VALID_LOGIN, "s3cr3t", "Camilo Porto", "8888-8765", "5th St.");
+        profileService.save(p);
+
+        try {
+            profileService.changePassword(VALID_LOGIN, "s3cr3t", "newPassword", "mispelledPassword");
+            Assert.fail("should raised exception. password was not confirmed on change");
+        } catch (ConstraintViolationException e) {
+            new ExceptionChecker(e)
+                    .assertErrorCount(1)
+                    .assertTemplateMessagePresentAndI18Nized(
+                            "{br.com.camiloporto.marmitex.microservice.profile.NEW_PASSWORD.notConfirmed}");
+        }
+
+        Profile queried = profileRepository.findByLogin(VALID_LOGIN);
+        Assert.assertEquals(queried.getPass(), "s3cr3t", "password should not be changed");
+    }
+
+    @Test
+    public void newPasswordIsRequiredOnChange() {
+        Profile p = new Profile(VALID_LOGIN, "s3cr3t", "Camilo Porto", "8888-8765", "5th St.");
+        profileService.save(p);
+        String newNullPassword = null;
+
+        try {
+            profileService.changePassword(VALID_LOGIN, "s3cr3t", newNullPassword, "mispelledPassword");
+            Assert.fail("should raised exception. new password is required");
+        } catch (ConstraintViolationException e) {
+            new ExceptionChecker(e)
+                    .assertErrorCount(1)
+                    .assertTemplateMessagePresentAndI18Nized(
+                            "{br.com.camiloporto.marmitex.microservice.profile.NEW_PASSWORD.required}");
+        }
+
+        Profile queried = profileRepository.findByLogin(VALID_LOGIN);
+        Assert.assertEquals(queried.getPass(), "s3cr3t", "password should not be changed");
+    }
+
+    @Test
+    public void confirmationPasswordIsRequiredOnChange() {
+        Profile p = new Profile(VALID_LOGIN, "s3cr3t", "Camilo Porto", "8888-8765", "5th St.");
+        profileService.save(p);
+        String newNullConfirmationPassword = null;
+
+        try {
+            profileService.changePassword(VALID_LOGIN, "s3cr3t", "newPassword", newNullConfirmationPassword);
+            Assert.fail("should raised exception. confirmation password is required");
+        } catch (ConstraintViolationException e) {
+            new ExceptionChecker(e)
+                    .assertErrorCount(1)
+                    .assertTemplateMessagePresentAndI18Nized(
+                            "{br.com.camiloporto.marmitex.microservice.profile.NEW_PASSWORD_CONFIRMATION.required}");
+        }
+
+        Profile queried = profileRepository.findByLogin(VALID_LOGIN);
+        Assert.assertEquals(queried.getPass(), "s3cr3t", "password should not be changed");
     }
 
     //FIXME add change password function and rescue password. confirm pass

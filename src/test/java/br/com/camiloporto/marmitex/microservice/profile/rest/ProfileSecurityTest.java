@@ -88,7 +88,7 @@ public class ProfileSecurityTest extends AbstractMarmitexProfileTest {
     public void shouldChangePassword() throws Exception {
         String login = "camiloporto@email";
         String pass = "s3cr3t";
-        String newpass = "s3cr3t";
+        String newpass = "newpass";
         Profile p = new Profile(login, pass, "Camilo Porto", "8888-8765", "5th St.");
         profileService.save(p);
         Profile saved = profileRepository.findByLogin("camiloporto@email");
@@ -113,7 +113,7 @@ public class ProfileSecurityTest extends AbstractMarmitexProfileTest {
 
         Profile updated = profileRepository.findByLogin("camiloporto@email");
         Assert.assertNotNull(updated.getPass());
-        Assert.assertNotEquals(updated.getPass(), saved.getPass());
+        Assert.assertNotEquals(updated.getPass(), pass);
 
     }
 

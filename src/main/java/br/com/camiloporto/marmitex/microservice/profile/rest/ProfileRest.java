@@ -38,6 +38,6 @@ public class ProfileRest {
         String password = params.get("password");
         String newPassword = params.get("newPassword");
         String confirmPassword = params.get("confirmPassword");
-        profileService.changePassword(username, password, newPassword);
+        profileService.changePassword(username, password, newPassword, confirmPassword);
     }
 }

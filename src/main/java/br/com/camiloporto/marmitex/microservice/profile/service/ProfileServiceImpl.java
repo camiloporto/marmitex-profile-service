@@ -78,8 +78,16 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void changePassword(String login, String actualPassword, String newPassword) {
+    public void changePassword(String login, String actualPassword, String newPassword, String confirmedPassword) {
         Profile profile = profileRepository.findByLogin(login);
+        BusinessValidator<ProfileValidationChecklist> businessValidator =
+                new BusinessValidator<>(validator);
+        ProfileValidationChecklist checklist = checklistValidationFactory.createProfileValidationChecklist();
+        checklist.setProfile(profile);
+        checklist.setNewPassword(newPassword);
+        checklist.setConfirmedPassword(confirmedPassword);
+        businessValidator.validate(checklist, ProfileValidationChecklist.ChangePasswordRuleGroups.class);
+
         if(profile != null && passwordEncoder.matches(actualPassword, profile.getPass())) {
             String encodedPass = passwordEncoder.encode(newPassword);
             profile.setPass(encodedPass);
