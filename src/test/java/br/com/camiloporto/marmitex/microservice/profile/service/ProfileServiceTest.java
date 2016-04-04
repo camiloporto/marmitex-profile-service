@@ -4,8 +4,11 @@ import br.com.camiloporto.marmitex.microservice.profile.AbstractMarmitexProfileT
 import br.com.camiloporto.marmitex.microservice.profile.model.Profile;
 import br.com.camiloporto.marmitex.microservice.profile.util.ExceptionChecker;
 import lombok.Setter;
-import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import javax.validation.ConstraintViolationException;
@@ -19,6 +22,30 @@ public class ProfileServiceTest extends AbstractMarmitexProfileTest {
 
     @Autowired @Setter
     private ProfileService profileService;
+
+    private PasswordEncoder realPasswordEncoder;
+
+    @AfterClass
+    public void unmockPasswordEncoder() {
+        ((ProfileServiceImpl)profileService).setPasswordEncoder(realPasswordEncoder);
+    }
+
+    @BeforeClass
+    public void mockPasswordEncoder() {
+        realPasswordEncoder = ((ProfileServiceImpl)profileService).getPasswordEncoder();
+        PasswordEncoder fakePasswordEncoder = new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence charSequence) {
+                return charSequence.toString();
+            }
+
+            @Override
+            public boolean matches(CharSequence charSequence, String s) {
+                return charSequence.toString().equals(s);
+            }
+        };
+        ((ProfileServiceImpl)profileService).setPasswordEncoder(fakePasswordEncoder);
+    }
 
     @Test
     public void shouldCreateNewProfile() {
@@ -111,5 +138,16 @@ public class ProfileServiceTest extends AbstractMarmitexProfileTest {
         }
     }
 
-    //FIXME add change password function and rescue password
+    @Test
+    public void shouldChangePassword() {
+        Profile p = new Profile(VALID_LOGIN, "s3cr3t", "Camilo Porto", "8888-8765", "5th St.");
+        profileService.save(p);
+
+        profileService.changePassword(VALID_LOGIN, "s3cr3t", "newPassword");
+
+        Profile queried = profileRepository.findByLogin(VALID_LOGIN);
+        Assert.assertEquals(queried.getPass(), "newPassword", "password not updated as expected");
+    }
+
+    //FIXME add change password function and rescue password. confirm pass
 }

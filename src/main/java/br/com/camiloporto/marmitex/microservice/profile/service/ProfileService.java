@@ -17,4 +17,6 @@ public interface ProfileService extends AuthenticationProvider {
 
     @Override
     boolean supports(Class<?> aClass);
+
+    void changePassword(String username, String actualPassword, String newPassword);
 }

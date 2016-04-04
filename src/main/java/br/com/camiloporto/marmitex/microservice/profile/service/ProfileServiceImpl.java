@@ -2,6 +2,8 @@ package br.com.camiloporto.marmitex.microservice.profile.service;
 
 import br.com.camiloporto.marmitex.microservice.profile.model.Profile;
 import br.com.camiloporto.marmitex.microservice.profile.repository.RDMBSProfileRepository;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -33,7 +35,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Autowired @Setter
     private ChecklistValidationFactory checklistValidationFactory;
 
-    @Autowired @Setter
+    @Autowired @Setter @Getter(value = AccessLevel.PACKAGE)
     private PasswordEncoder passwordEncoder;
 
     @Override
@@ -73,5 +75,18 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public boolean supports(Class<?> authentication) {
         return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
+    }
+
+    @Override
+    public void changePassword(String login, String actualPassword, String newPassword) {
+        Profile profile = profileRepository.findByLogin(login);
+        if(profile != null && passwordEncoder.matches(actualPassword, profile.getPass())) {
+            String encodedPass = passwordEncoder.encode(newPassword);
+            profile.setPass(encodedPass);
+            profileRepository.save(profile);
+        } else {
+            //FIXME throw more adequate exception.. CVEx?
+            throw new BadCredentialsException("Bad Credentials");
+        }
     }
 }

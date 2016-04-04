@@ -41,7 +41,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .csrf().disable() //FIXME should it be disabled?
             .formLogin()
                 .successHandler(restAuthenticationSuccessHandler())
-                .failureHandler(restAuthenticationFailureHandler());
+                .failureHandler(restAuthenticationFailureHandler())
+        .and().authorizeRequests()
+                .antMatchers("/").permitAll()
+                .anyRequest().authenticated();
     }
 
     @Bean

@@ -29,7 +29,6 @@ public class ProfileRestTest extends AbstractMarmitexProfileTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-
     @BeforeClass
     public void setUp() throws Exception {
         mvc =  webAppContextSetup(webApplicationContext)
