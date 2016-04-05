@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Profile("dev")
 @EnableJpaRepositories(basePackages = "br.com.camiloporto.marmitex.microservice.profile")
 @EntityScan(basePackages = "br.com.camiloporto.marmitex.microservice.profile")
-public class TestDataSourceConfiguration implements DataSourceConfiguration {
+public class TestDataSourceConfiguration {
 //    @Override
 //    public DataSource createDataSource() {
 //        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
