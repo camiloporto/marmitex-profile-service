@@ -9,7 +9,6 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -19,7 +18,7 @@ import java.util.UUID;
  * Created by ur42 on 09/03/2016.
  */
 
-@Component
+//@Component
 public class CloudantProfileRepository /*implements ProfileRepository */{
 
     //FIXME refatorar esse codigo. Parametrizar valores e delegar para o spring construir e injetar dependencias
