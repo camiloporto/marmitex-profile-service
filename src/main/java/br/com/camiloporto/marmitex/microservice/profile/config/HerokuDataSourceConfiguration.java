@@ -23,7 +23,7 @@ public class HerokuDataSourceConfiguration implements DataSourceConfiguration {
         String password = System.getenv("JDBC_DATABASE_PASSWORD");
 
         HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setDataSourceClassName("org.postgresql.Driver");
+        dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setJdbcUrl(dbUrl);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
