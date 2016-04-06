@@ -1,6 +1,5 @@
 package br.com.camiloporto.marmitex.microservice.profile;
 
-import br.com.camiloporto.marmitex.microservice.profile.config.RestTemplateBehindProxyConfig;
 import br.com.camiloporto.marmitex.microservice.profile.config.TestDataSourceConfiguration;
 import br.com.camiloporto.marmitex.microservice.profile.repository.RDMBSProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.testng.annotations.BeforeMethod;
  */
 @SpringApplicationConfiguration(classes = {
         ServiceApplication.class,
-        RestTemplateBehindProxyConfig.class,
         TestDataSourceConfiguration.class
         })
 public class AbstractMarmitexProfileTest extends AbstractTestNGSpringContextTests {
