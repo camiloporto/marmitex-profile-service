@@ -5,6 +5,7 @@ import org.springframework.web.client.RestTemplate;
 /**
  * Created by ur42 on 11/03/2016.
  */
+@Deprecated
 public interface RestTemplateConfiguration {
 
     RestTemplate createRestTemplate();

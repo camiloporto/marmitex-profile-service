@@ -19,6 +19,7 @@ import java.util.UUID;
  */
 
 //@Component
+    @Deprecated
 public class CloudantProfileRepository /*implements ProfileRepository */{
 
     //FIXME refatorar esse codigo. Parametrizar valores e delegar para o spring construir e injetar dependencias

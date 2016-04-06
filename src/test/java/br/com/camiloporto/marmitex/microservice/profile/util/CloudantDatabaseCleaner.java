@@ -8,7 +8,6 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -17,7 +16,8 @@ import java.util.List;
 /**
  * Created by ur42 on 17/03/2016.
  */
-@Component
+//@Component
+    @Deprecated
 public class CloudantDatabaseCleaner {
 
     @Autowired

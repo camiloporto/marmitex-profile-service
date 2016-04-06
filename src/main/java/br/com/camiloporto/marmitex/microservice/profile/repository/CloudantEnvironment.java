@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
  */
 @Getter @Setter
 //@Component
+@Deprecated
 public class CloudantEnvironment {
 
     @Value("${cloudant.key}")
