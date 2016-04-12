@@ -22,8 +22,4 @@ public class RDBMSProfileRepositoryTest extends AbstractTransactionalMarmitexPro
         Assert.assertNotNull(saved.getProfileId());
 
     }
-
-    //FIXME criar camada de negocio com regras de validacao para:
-    // - alteração de senha
-
 }

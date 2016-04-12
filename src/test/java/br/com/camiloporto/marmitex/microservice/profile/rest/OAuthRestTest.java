@@ -1,7 +1,9 @@
 package br.com.camiloporto.marmitex.microservice.profile.rest;
 
 import br.com.camiloporto.marmitex.microservice.profile.AbstractMarmitexProfileTest;
+import br.com.camiloporto.marmitex.microservice.profile.model.OAuthClientProfile;
 import br.com.camiloporto.marmitex.microservice.profile.model.Profile;
+import br.com.camiloporto.marmitex.microservice.profile.service.OAuthClientProfileService;
 import br.com.camiloporto.marmitex.microservice.profile.service.ProfileService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,9 @@ public class OAuthRestTest extends AbstractMarmitexProfileTest {
     private ProfileService profileService;
 
     @Autowired
+    private OAuthClientProfileService clientProfileService;
+
+    @Autowired
     FilterChainProxy filterChain;
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -53,9 +58,9 @@ public class OAuthRestTest extends AbstractMarmitexProfileTest {
     @Test
     public void shouldGetBearerToken() throws Exception {
         Profile user = new Profile("camiloporto@email.com", "user-s3cr3t", "Camilo Porto", "8888-8765", "5th St.");
-        Profile client = new Profile("marmitex@email.com", "client-s3cr3t", "Camilo Porto", "8888-8765", "5th St.");
+        OAuthClientProfile client = new OAuthClientProfile("marmitex@email.com", "client-s3cr3t");
         profileService.save(user);
-        profileService.save(client);
+        clientProfileService.create(client);
 
         String header = "Basic " + new String(Base64.encode("marmitex@email.com:client-s3cr3t".getBytes()));
         MvcResult result = mvc
