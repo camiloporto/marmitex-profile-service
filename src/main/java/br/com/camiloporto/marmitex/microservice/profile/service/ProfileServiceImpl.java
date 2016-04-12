@@ -7,10 +7,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -54,27 +54,9 @@ public class ProfileServiceImpl implements ProfileService {
         p.setPass(encodedPass);
     }
 
-    @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String login = authentication.getName();
-        String plainPass = authentication.getCredentials().toString();
-        Profile profile = profileRepository.findByLogin(login);
-        if(profile != null && passwordEncoder.matches(plainPass, profile.getPass())) {
-            List<GrantedAuthority> authorities = loadAuthorities(profile);
-            return new UsernamePasswordAuthenticationToken(login, plainPass, authorities);
-        } else {
-            throw new BadCredentialsException("Bad Credentials");
-        }
-    }
-
     private List<GrantedAuthority> loadAuthorities(Profile profile) {
         //FIXME load authorities when necessary
         return new ArrayList<>();
-    }
-
-    @Override
-    public boolean supports(Class<?> authentication) {
-        return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
     }
 
     @Override
@@ -95,6 +77,17 @@ public class ProfileServiceImpl implements ProfileService {
         } else {
             //FIXME throw more adequate exception.. CVEx?
             throw new BadCredentialsException("Bad Credentials");
+        }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        Profile profile = profileRepository.findByLogin(login);
+        if(profile != null) {
+            List<GrantedAuthority> authorities = loadAuthorities(profile);
+            return new User(profile.getLogin(), profile.getPass(), authorities);
+        } else {
+            throw new UsernameNotFoundException("login");
         }
     }
 }

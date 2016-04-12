@@ -1,13 +1,16 @@
 package br.com.camiloporto.marmitex.microservice.profile.config;
 
 import br.com.camiloporto.marmitex.microservice.profile.service.OAuthClientProfileService;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.password.ResourceOwnerPasswordTokenGranter;
@@ -23,14 +26,15 @@ import java.util.List;
 @EnableAuthorizationServer
 public class OAuth2Configuration extends AuthorizationServerConfigurerAdapter {
 
-    //FIXME criar um cadastro de clientes
-    //FIXME alterar ProfileServiceImpl. transforma-lo num UserDetailsService. Deixar o AuthenticationManager padrao com passwordEncoder.
     //FIXME dar uma olhada na Interface RegistrationService
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
     private OAuthClientProfileService clientProfileService;
+
+    @Autowired @Setter
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
@@ -44,12 +48,12 @@ public class OAuth2Configuration extends AuthorizationServerConfigurerAdapter {
     }
 
     @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        security.passwordEncoder(passwordEncoder);
+    }
+
+    @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.withClientDetails(clientProfileService);
-//        inMemory()
-//                .withClient("marmitex")
-//                .secret("marmitex-secret")
-//                .authorizedGrantTypes("password")
-//                .scopes("write");
     }
 }
