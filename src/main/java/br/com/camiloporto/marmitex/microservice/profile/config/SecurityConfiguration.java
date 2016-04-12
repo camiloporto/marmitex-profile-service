@@ -39,12 +39,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint())
             .and()
             .csrf().disable() //FIXME should it be disabled?
+            .authorizeRequests()
+                .antMatchers("/uaa").permitAll()
+                .anyRequest().authenticated()
+            .and()
             .formLogin()
                 .successHandler(restAuthenticationSuccessHandler())
                 .failureHandler(restAuthenticationFailureHandler())
-        .and().authorizeRequests()
-                .antMatchers("/").permitAll()
-                .anyRequest().authenticated();
+                .permitAll();
     }
 
     @Bean

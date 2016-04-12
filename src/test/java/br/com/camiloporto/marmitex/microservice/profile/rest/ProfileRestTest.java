@@ -45,7 +45,7 @@ public class ProfileRestTest extends AbstractMarmitexProfileTest {
         String jsonContent = toJson(p);
 
         mvc.perform(MockMvcRequestBuilders
-                .post("/create")
+                .post("/uaa")
                 .content(jsonContent)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8))
@@ -65,7 +65,7 @@ public class ProfileRestTest extends AbstractMarmitexProfileTest {
         String jsonContent = toJson(p);
 
         ResultActions result = mvc.perform(MockMvcRequestBuilders
-                .post("/create")
+                .post("/uaa")
                 .content(jsonContent)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8))
@@ -81,7 +81,7 @@ public class ProfileRestTest extends AbstractMarmitexProfileTest {
     public void shouldHandleInternalErrors() throws Exception {
 
         ResultActions result = mvc.perform(MockMvcRequestBuilders
-                .get("/")//GET not accepted
+                .get("/uaa")//GET not accepted
                 .accept(MediaType.APPLICATION_JSON_UTF8))
                 .andDo(print());
 

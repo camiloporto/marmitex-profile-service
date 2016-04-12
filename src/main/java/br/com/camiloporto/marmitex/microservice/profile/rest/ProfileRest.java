@@ -12,13 +12,13 @@ import java.util.Map;
 /**
  * Created by ur42 on 04/03/2016.
  */
-@RestController("/")
+@RestController
 public class ProfileRest {
 
     @Autowired @Setter
     private ProfileService profileService;
 
-    @RequestMapping(
+    @RequestMapping(value = "/uaa",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
