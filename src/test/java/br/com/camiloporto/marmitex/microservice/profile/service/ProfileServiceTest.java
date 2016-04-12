@@ -24,6 +24,7 @@ public class ProfileServiceTest extends AbstractMarmitexProfileTest {
     private ProfileService profileService;
 
     private PasswordEncoder realPasswordEncoder;
+    private PasswordEncoder fakePasswordEncoder;
 
     @AfterClass
     public void unmockPasswordEncoder() {
@@ -33,7 +34,7 @@ public class ProfileServiceTest extends AbstractMarmitexProfileTest {
     @BeforeClass
     public void mockPasswordEncoder() {
         realPasswordEncoder = ((ProfileServiceImpl)profileService).getPasswordEncoder();
-        PasswordEncoder fakePasswordEncoder = new PasswordEncoder() {
+        fakePasswordEncoder = new PasswordEncoder() {
             @Override
             public String encode(CharSequence charSequence) {
                 return charSequence.toString();
@@ -52,6 +53,19 @@ public class ProfileServiceTest extends AbstractMarmitexProfileTest {
         Profile p = new Profile(VALID_LOGIN, "s3cr3t", "Camilo Porto", "8888-8765", "5th St.");
         Profile saved = profileService.save(p);
         Assert.assertNotNull(saved.getProfileId());
+    }
+
+    @Test
+    public void passwordMustBeEncoded() {
+        ((ProfileServiceImpl)profileService).setPasswordEncoder(realPasswordEncoder);
+        try {
+            Profile p = new Profile(VALID_LOGIN, "s3cr3t", "Camilo Porto", "8888-8765", "5th St.");
+            profileService.save(p);
+            Profile saved = profileRepository.findByLogin(VALID_LOGIN);
+            Assert.assertNotEquals(saved.getPass(), "s3cr3t", "password should not be equals to plain password informed");
+        } finally {
+            ((ProfileServiceImpl)profileService).setPasswordEncoder(fakePasswordEncoder);
+        }
     }
 
     @Test
