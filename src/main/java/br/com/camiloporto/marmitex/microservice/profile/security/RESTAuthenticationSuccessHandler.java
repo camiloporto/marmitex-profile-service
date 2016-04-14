@@ -11,6 +11,7 @@ import java.io.IOException;
 /**
  * Created by ur42 on 01/04/2016.
  */
+@Deprecated //not necessary anymore with OAuth2
 public class RESTAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Override

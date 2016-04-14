@@ -15,6 +15,7 @@ import java.util.Map;
 @RestController
 public class ProfileRest {
 
+    //FIXME turn this API into a OAuth2 Resource Server. only authenticated clients should request
     @Autowired @Setter
     private ProfileService profileService;
 
@@ -27,6 +28,7 @@ public class ProfileRest {
         profileService.save(profile);
     }
 
+    //FIXME do not receive login as a param. Instead, retrieve it from authenticated Principal
     @RequestMapping(
             value = "/changePassword",
             method = RequestMethod.POST,
