@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Map;
 
 /**
@@ -15,10 +16,11 @@ import java.util.Map;
 @RestController
 public class ProfileRest {
 
-    //FIXME turn this API into a OAuth2 Resource Server. only authenticated clients should request
+
     @Autowired @Setter
     private ProfileService profileService;
 
+    //FIXME only registered Clients should call this API?
     @RequestMapping(value = "/uaa",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -28,15 +30,14 @@ public class ProfileRest {
         profileService.save(profile);
     }
 
-    //FIXME do not receive login as a param. Instead, retrieve it from authenticated Principal
     @RequestMapping(
             value = "/changePassword",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
         )
-    public @ResponseBody void changePassword(@RequestBody Map<String, String> params) {
-        String username = params.get("username");
+    public @ResponseBody void changePassword(Principal principal, @RequestBody Map<String, String> params) {
+        String username = principal.getName();
         String password = params.get("password");
         String newPassword = params.get("newPassword");
         String confirmPassword = params.get("confirmPassword");

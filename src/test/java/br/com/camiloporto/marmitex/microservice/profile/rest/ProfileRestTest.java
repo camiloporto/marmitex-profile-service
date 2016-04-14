@@ -165,7 +165,7 @@ public class ProfileRestTest extends AbstractMarmitexProfileTest {
         profileService.save(user);
         clientProfileService.create(client);
 
-        String header = "Basic " + new String(Base64.encode("marmitex@email.com:client-s3cr3t".getBytes()));
+        String header = "Basic " + new String(Base64.encode((client.getUsername() + ":client-s3cr3t").getBytes()));
         MvcResult result = mvc
                 .perform(post("/oauth/token")
                         .header("Authorization", header)
@@ -179,11 +179,9 @@ public class ProfileRestTest extends AbstractMarmitexProfileTest {
                 .readValue(result.getResponse().getContentAsString(), Map.class)
                 .get("access_token");
 
-        String login = user.getLogin();
         String pass = "user-s3cr3t";
         String newpass = "newpass";
         Map<String, String> jsonMap = new HashMap<>();
-        jsonMap.put("username", login);//FIXME should it pass login? get it from logged user session instead?
         jsonMap.put("password", pass);
         jsonMap.put("newPassword", newpass);
         jsonMap.put("confirmPassword", newpass);
@@ -200,7 +198,7 @@ public class ProfileRestTest extends AbstractMarmitexProfileTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        Profile updated = profileRepository.findByLogin(login);
+        Profile updated = profileRepository.findByLogin(user.getLogin());
         Assert.assertNotNull(updated.getPass());
         Assert.assertNotEquals(updated.getPass(), pass);
 
