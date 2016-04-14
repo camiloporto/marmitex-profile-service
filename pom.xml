@@ -5,7 +5,7 @@
 
 	<groupId>br.com.camiloporto.marmitex</groupId>
 	<artifactId>service</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.3</version>
 	<packaging>jar</packaging>
 
 	<name>service</name>
@@ -65,12 +65,6 @@
 			<artifactId>hsqldb</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-
-		<!--<dependency>-->
-			<!--<groupId>org.apache.httpcomponents</groupId>-->
-			<!--<artifactId>httpclient</artifactId>-->
-		<!--</dependency>-->
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
