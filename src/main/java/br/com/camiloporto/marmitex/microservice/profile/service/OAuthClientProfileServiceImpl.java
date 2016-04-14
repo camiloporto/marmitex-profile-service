@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
@@ -17,6 +18,7 @@ import java.util.Arrays;
  * Created by ur42 on 12/04/2016.
  */
 @Service
+@DependsOn(value = "passwordEncoder")
 public class OAuthClientProfileServiceImpl implements OAuthClientProfileService {
 
     @Autowired

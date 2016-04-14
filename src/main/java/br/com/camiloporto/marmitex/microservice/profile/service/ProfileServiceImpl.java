@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -22,6 +23,7 @@ import java.util.List;
  * Created by ur42 on 29/03/2016.
  */
 @Service
+@DependsOn(value = "passwordEncoder")
 public class ProfileServiceImpl implements ProfileService {
 
     @Autowired
