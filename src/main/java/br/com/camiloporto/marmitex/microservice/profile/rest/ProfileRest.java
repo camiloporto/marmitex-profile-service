@@ -20,6 +20,11 @@ public class ProfileRest {
     @Autowired @Setter
     private ProfileService profileService;
 
+    @RequestMapping("/user")
+    public Principal user(Principal user) {
+        return user;
+    }
+
     //FIXME only registered Clients should call this API?
     @RequestMapping(value = "/uaa",
             method = RequestMethod.POST,
